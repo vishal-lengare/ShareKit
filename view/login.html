@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/login.js"></script>
+    <script src="../js/session.js"></script>
+</head>
+<body>
+   
+    <div class="grid grid-cols-2 h-screen ">  <!--overflow-hidden  - i have removed these class, if you want then apply, it is helping to avoid the screnn scrolling-->
+       <div class="flex flex-col items-center justify-center gap-y-6">
+        <div class="flex gap-1">
+            <img src="images/logo.png" alt="logo" class="w-10">
+            <div class="flex">
+                <h1 class="text-3xl font-semibold">Share</h1>
+                <h1 class="text-3xl text-blue-600 font-semibold">Kit</h1>
+            </div>
+        </div>
+
+        <h1 class="text-5xl font-bold">Welcome back !</h1>
+        <p class="text-lg text-gray-500">Add your info to use our services</p>
+
+        <form class="w-4/6 space-y-6" onsubmit="login(event)"> 
+            <input type="email" name="email" class="p-4 border border-gray-300 rounded-lg w-full" placeholder="Email" required />
+            <input autocomplete type="password" name="password" class="p-4 border border-gray-300 rounded-lg w-full" placeholder="password" required />
+            <button class="p-4 bg-gray-900 rounded-lg text-white font-semibold w-full" >Sign In</button>
+        </form>
+        <div>
+            <label class="text-gray-600 text-base">Don't have an Account </label>
+            <a href="/signup.html" class="text-blue-600 text-base font-medium" >Creat account</a>
+        </div>
+       </div>
+       <div class="">
+        <img src="  images/login-bg.jpg" alt="Login_Img">
+        </div>
+    </div>
+</body>
+</html>
