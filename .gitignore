@@ -42,5 +42,3 @@ testem.log
 Thumbs.db
 dist
 dist.zip
-storage/files
-storage/pictures
