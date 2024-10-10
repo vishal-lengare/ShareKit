@@ -11,9 +11,15 @@
 />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../js/session.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/files.js"></script>
+<style>
+    #drawer{
+        transition: 400ms;
+    }
+</style>
 </head>
 <body>
     <div class="bg-gray-100 fixed top-0 left-0 w-[300px] h-full p-8 space-y-12">
@@ -66,11 +72,15 @@
             <input type="file" class="opacity-0 absolute top-0 left-0 w-full h-full" onchange="uploadFile(event)">
         </div>
 
-        <div class="bg-blue-100 text-white mt-8">
-            <div class="w-[50%] bg-blue-600 h-full text-center">
-                uploading
+        <div>
+            <div class="bg-blue-100 text-white mt-8">
+                <div class="w-0 bg-blue-600 h-full text-center" id="progress">
+                    
+                </div>
             </div>
+            <div id="size"></div>
         </div>
+ 
 
         <div class=" mt-8 gap-12">
 
@@ -95,9 +105,46 @@
                 <button class="bg-slate-900 rounded px-4 py-2 text-white">4</button>
                 <button class="bg-slate-900 rounded px-4 py-2 text-white">5</button>
             </div>
-            
         </div>
+       
+        <aside id="drawer" class="bg-white w-[450px] fixed top-0 h-full shadow-lg -right-[450px]"> <!-- -right-[450px] -->
+            <div class="px-6 py-4 border-b flex item-center justify-between">
+                <h1 class="text-lg font-medium" id="fileName"></h1>
+                <i class="ri-close-circle-fill" onclick="closeDrawer()"></i>
+            </div>
+            <form class="p-6 space-y-8" onsubmit="shareFile(event)">
 
+                <div class="flex flex-col hidden">
+                    <label class="text-lg font-medium mb-2">Sender</label>
+                    <input type="text" name="sender" class="border rounded p-3" readonly disabled required id="sender">
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="text-lg font-medium mb-2">Fullname</label>
+                    <input type="text" name="user" class="border rounded p-3" placeholder="Enter the name of user" required>
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="text-lg font-medium mb-2">Email</label>
+                    <input type="email" name="email" class="border rounded p-3" placeholder="mail@example.com" required>
+                </div>
+
+                <div class="flex flex-col hidden">
+                    <label class="text-lg font-medium mb-2">File</label>
+                    <input readonly disabled name="file" class="border rounded p-3" required id="file-input">
+                </div>
+
+                <button class="bg-indigo-600 text-white px-6 py-3 rounded hidden" disabled id="loading-btn">
+                    <i class="ri-send-plane-line"></i>
+                    Sending...
+                </button>
+
+                <button class="bg-rose-600 text-white px-6 py-3 rounded" id="sending-btn">
+                    <i class="ri-send-plane-line"></i>
+                    SEND
+                </button>
+            </form>
+        </aside>
     </div>
 
 </body>

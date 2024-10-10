@@ -1,5 +1,6 @@
 import FileModel from '../Model/file.model.js'
 import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken'
 
 const emailTemplate = (data)=>{
     return `
@@ -57,9 +58,13 @@ const emailTemplate = (data)=>{
                 </div>
                 <div class="email-body">
                     <p style="text-transform: capatalize">Hello ${data.user},</p>
-                    <p>you have recieved the file form sharekit! <br> to download the file click on the below button.</p>
-                    <a href="${data.file}" download='demo' style="color: white;" class="button">Take Action</a>
-                    <p>If you have any questions, feel free to contact us.</p>
+
+                    <p>you have recieved the file from sharekit! <br> to download the file click on the below link.</p>
+                    <a href="${process.env.SERVER}/api/file/download?token=${data.token}" download='demo' style="color: white;" class="button">Take Action</a>
+                    <p>If you have any questions, feel free to contact us on below email</p>
+
+                     <p style="text-transform: capatalize"><b>Contact us - <b/>${data.sender}</p>
+                     <br>
                     <p>Thank you!</p>
                 </div>
                 <div class="email-footer">
@@ -133,21 +138,24 @@ export const downloadFile = async(req, res)=>{
 
 export const shareFile = async (req, res) => {
     try {
-
+        const receipt = req.body;
+        const payload = {
+            file: receipt.file
+        }
+        const token = jwt.sign(payload, process.env.JWT_FILE_SECRET, {expiresIn: '7d'})
+        receipt.token = token
         const smtp = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: process.env.SMTP_EMAIL,
                 pass: process.env.SMTP_PASSWORD
             }
-        }) 
-
-        
+        })         
         await smtp.sendMail({
             from: process.env.SMTP_EMAIL,
-            to: 'vishal.logimetrix@gmail.com',
+            to: receipt.email,
             subject: 'ShareKit - New File Received!',
-            html: emailTemplate(req.body)
+            html: emailTemplate(receipt)
         })
         res.status(200).json({
             message: 'File sent'
